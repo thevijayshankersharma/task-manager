@@ -73,4 +73,4 @@ Open the ```index.html``` file in a web browser.
 
 ### 6. Database Setup
 
-SQLite is used as the database. The database will be created automatically when the backend is started. It stores task data such as title, description, due date, and status.
+SQLite is used as the database. The database will be created automatically when the backend is started. It stores task data such as title, description, due date, and status. 
