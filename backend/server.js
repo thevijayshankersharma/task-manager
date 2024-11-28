@@ -28,6 +28,16 @@ app.get('/tasks', (req, res) => {
     });
 });
 
+// Get a specific task by ID
+app.get('/tasks/:id', (req, res) => {
+    const { id } = req.params;
+    db.get(`SELECT * FROM tasks WHERE id = ?`, [id], (err, row) => {
+        if (err) return res.status(500).json({ error: err.message });
+        if (!row) return res.status(404).json({ error: 'Task not found' });
+        res.json(row);
+    });
+});
+
 // Update a task
 app.put('/tasks/:id', (req, res) => {
     const { id } = req.params;
@@ -49,6 +59,20 @@ app.delete('/tasks/:id', (req, res) => {
         if (err) return res.status(500).json({ error: err.message });
         res.json({ deleted: this.changes });
     });
+});
+
+// Toggle task status
+app.patch('/tasks/:id/status', (req, res) => {
+    const { id } = req.params;
+    const { status } = req.body;
+    db.run(
+        `UPDATE tasks SET status = ? WHERE id = ?`,
+        [status, id],
+        function (err) {
+            if (err) return res.status(500).json({ error: err.message });
+            res.json({ updated: this.changes });
+        }
+    );
 });
 
 const PORT = 3000;
